@@ -1,0 +1,81 @@
+:root {
+    /* Color */
+    --white-color: #fff;
+    --black-color: #262626;
+    --black-light-color: #1a1919;
+    --grey-color: #424242;
+    --grey-light-color: #9e9e9e;
+    --pink-color: #f8bbd0;
+
+    /* Size */
+    --padding: 10px;
+    --profile-size: 36px;
+    
+    /* Font Size */
+    --font-large: 20px;
+    --font-medium: 14px;
+    --font-small: 12px;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    background-color: var(--white-color);
+    
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    height: 705px;
+    
+}
+
+button, button:focus {
+    border: none;
+    cursor: pointer;
+    outline: none;
+    background-color: var(--white-color);
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--padding);
+    height: 65px;
+}
+
+header .p_reshot img {
+
+}
+
+header .p_dot img{
+    width: 40%;
+    height: 50%;
+}
+
+.p_photopreview img{
+    width: 100%;
+    height: 420px;
+}
+
+.p_shotBtn {
+    display: flex;
+    flex-direction: column;
+    padding: var(--padding) 110px;
+}
+
+.p_shotBtn .p_text{
+    text-align: center;
+    color: var(--white-color);
+    font-size: var(--font-large);
+    background-color: var(--pink-color);
+    border-radius: 10px 10px 10px 10px;
+    padding-top: 3px;
+    height: 35px;
+}
+
+.p_shotBtn .p_shotbutton img {
+    padding-top: 20px;
+}
