@@ -461,8 +461,12 @@ var imageProcessing = () => {
 		let imgElement = document.getElementById('c_capture');
 		let mat = cv.imread(imgElement);
 		let gray = new cv.Mat();
-
+		let dsize = new cv.Size(640, 640);
+		
+		cv.resize(mat, mat, dsize, 0, 0, cv.INTER_AREA);
 		cv.cvtColor(mat, gray, cv.COLOR_RGB2GRAY, 0);
+		// cv.threshold(gray, gray, 100, 200, cv.THRESH_BINARY);
+		cv.adaptiveThreshold(gray, gray, 200, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY, 3, 2);
 		cv.imshow('c_capture', gray);
 		mat.delete();
 
@@ -487,10 +491,7 @@ var imageProcessing = () => {
 		// 	setTimeout(() => {
 		// 		transmitToESP32();
 		// 	},1000);
-		// }, 10);
-
-
-	
+		// }, 10);	
 }
 
 var loadingPageSet = () => {
@@ -510,99 +511,103 @@ var transmitToESP32 = () => {
 	if(connectStateBLE === true){
 		var add = 10;
 
-		setTimeout(() => {
-			bmp = 0;
-			bmpRaw = 0;
-			bmpRawBitLength = 0;
-			TR_uint8 = 0;
-			TR_bufferCount = 0;
-			bmpSplit = 0;
-			TR_dataBuffer = [];
-			TR_dataBufferCount = 0;
+		// setTimeout(() => {
+		// 	bmp = 0;
+		// 	bmpRaw = 0;
+		// 	bmpRawBitLength = 0;
+		// 	TR_uint8 = 0;
+		// 	TR_bufferCount = 0;
+		// 	bmpSplit = 0;
+		// 	TR_dataBuffer = [];
+		// 	TR_dataBufferCount = 0;
 
-			//bmp = bRes.src;
-			bmpSplit = bRes.src.split(',');
-			console.log("bmpSplit: " + bmpSplit[1]);
-			bmp = bmpSplit[1];
-			bmpRaw = atob(bmp);
-			bmpRawBitLength = bmpRaw.length;
-			TR_uint8 = new Uint8Array(((bmpRawBitLength - 54) / 3));
+		// 	//bmp = bRes.src;
+		// 	bmpSplit = bRes.src.split(',');
+		// 	console.log("bmpSplit: " + bmpSplit[1]);
+		// 	bmp = bmpSplit[1];
+		// 	bmpRaw = atob(bmp);
+		// 	console.log(bmpRaw);
+		// 	bmpRawBitLength = bmpRaw.length;
+		// 	TR_uint8 = new Uint8Array(((bmpRawBitLength - 54) / 3));
 			
-			// console.log("bmpRawBitLength: " + bmpRawBitLength);
-			// console.log("bmpRawBitLength / 3 " + bmpRawBitLength / 3);
-			// console.log("TR_uint8: " + TR_uint8.length);
+		// 	// console.log("bmpRawBitLength: " + bmpRawBitLength);
+		// 	// console.log("bmpRawBitLength / 3 " + bmpRawBitLength / 3);
+		// 	// console.log("TR_uint8: " + TR_uint8.length);
 
-			for (var i = 54; i < bmpRawBitLength; i++){
-				if(i % 3 == 0){
-					// console.log(TR_bufferCount);
-					TR_uint8[TR_bufferCount] = bmpRaw.charCodeAt(i);
-					TR_bufferCount++;
-					// if(TR_bufferCount % 300 == 0){
-					// 	for(var j = 0; j < 300; j++){
-					// 		TR_dataBuffer[TR_dataBufferCount] += String(TR_uint8[j]);
-					// 	}
-					// 	TR_dataBufferCount++;
-					// }
-					// console.log(bmpRaw.charCodeAt(i));
-				}
-			}
-			
-			setTimeout(() => {
-				// console.log(TR_uint8.length);
-				// for (var i = 0; i < 152; i++){
-				// 	databuffer += 
-				// }
-				// for(var i = 0; i < 11000; i++){
-				// 	// writeandreaddata(String(TR_uint8[i]) + ' i: ' + String(i));
-				// 	writeandreaddata('1');
-				// }
-				setTimeout(() => {
-					// console.log(TR_uint8);
-						
-					// for(var i = 0; i < 152; i++){
-						
-					// }
-					
-				}, 10)
-			}, 10);
-		}, 10);		
-
-		// var intervalID = setInterval(() => {
-		// 	const progress = document.querySelector('.progress-percent');
-		// 	progress.style.opacity = 1;
-		// 	progress.style.width = add + '%';
-		// 	// console.log(add);
-		// 	if(printFinishFlag == 1 || add == 110){
-		// 		clearInterval(intervalID);
-		// 		printFinishFlag = 0;
-		// 		progress.style.width = 10 + '%';
-		// 		reloadTakePicturePage();
+		// 	for (var i = 54; i < bmpRawBitLength; i++){
+		// 		if(i % 3 == 0){
+		// 			// console.log(TR_bufferCount);
+		// 			TR_uint8[TR_bufferCount] = bmpRaw.charCodeAt(i);
+		// 			TR_bufferCount++;
+		// 			// if(TR_bufferCount % 300 == 0){
+		// 			// 	for(var j = 0; j < 300; j++){
+		// 			// 		TR_dataBuffer[TR_dataBufferCount] += String(TR_uint8[j]);
+		// 			// 	}
+		// 			// 	TR_dataBufferCount++;
+		// 			// }
+		// 			// console.log(bmpRaw.charCodeAt(i));
+		// 		}
 		// 	}
-		// 	add += 10;
-		// },1000)
-		//writeandreaddata(base64photo);
+		// }, 10);		
 
-		// for(var i = 0; i < length; i++){
-		//   if (i % 1000 == 0){
-		//     dataBuffer += ' ';
-		//   }
-		//   dataBuffer += base64photo.charAt(i);
-		// }
-
-		// var divisionData = dataBuffer.split(" ");
-		// console.log(divisionData);
-		
-		
-		// for(var i = 0; i < divisionData.length; i++){
-		//   console.log('BLE transmit start: ' + i);
-		//  writeandreaddata(divisionData[i]);
-		// }
 	} else {
+		
 		// alert("블루투스 연결을 확인해주세요");
+
+		bmp = 0;
+		bmpRaw = 0;
+		bmpRawBitLength = 0;
+		TR_uint8 = 0;
+		TR_bufferCount = 0;
+		bmpSplit = 0;
+		TR_dataBuffer = '';
+		TR_dataBufferCount = 0;
+
+		//bmp = bRes.src;
+		bmpSplit = bRes.src.split(',');
+		console.log("bmpSplit: " + bmpSplit[1]);
+		bmp = bmpSplit[1];
+		bmpRaw = atob(bmp);
+		bmpRawBitLength = bmpRaw.length;
+		//console.log("bmpRawBitLength: " + bmpRawBitLength);
+		TR_uint8 = new Uint8Array(((bmpRawBitLength - 54) / 3)); // 409600개
+		
+		// console.log("bmpRawBitLength: " + bmpRawBitLength);
+		// console.log("TR_uint8: " + TR_uint8.length);
+
+		for (var i = 54; i < bmpRawBitLength; i++){
+			if(i % 3 == 0){
+				// console.log(TR_bufferCount);
+				if(bmpRaw.charCodeAt(i) == 0){
+					TR_uint8[TR_bufferCount] = 1;	
+				} else {
+					TR_uint8[TR_bufferCount] = 0;	
+				}
+				TR_bufferCount++;
+
+				// TR_uint8[TR_bufferCount] = bmpRaw.charCodeAt(i);
+				// if(TR_bufferCount % 300 == 0){
+				// 	for(var j = 0; j < 300; j++){
+				// 		TR_dataBuffer[TR_dataBufferCount] += String(TR_uint8[j]);
+				// 	}
+				// 	TR_dataBufferCount++;
+				// }
+				// console.log(bmpRaw.charCodeAt(i));
+			}
+		}
+		for (var j = 0; j < TR_uint8.length; j++){
+			TR_dataBuffer += TR_uint8[j];
+		}
+		setTimeout(()=> {
+			console.log(TR_uint8);
+		}, 1000)
+		
+		
 		var xhttp = new XMLHttpRequest();
-		var a = 'testData:123456789'
+		//var TCPdata = '01010101001 '
+		var TCPdata = TR_dataBuffer;
 		//var a = TR_uint8;
-		url = 'http://192.168.4.1/' + a;
+		url = 'http://192.168.4.1/$' + TCPdata;
 	
 		xhttp.open("GET", url, true);
 		xhttp.send();
